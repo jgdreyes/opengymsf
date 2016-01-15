@@ -38,9 +38,7 @@ activate :external_pipeline,
 
 # Reload the browser automatically whenever files change
 configure :development do
-  activate :livereload#, ignore: ["asset-project"]
-
-  puts "HERE in development"
+  activate :livereload
   activate :asset_host, host: "//localhost:4200/assets"
 end
 
