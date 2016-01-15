@@ -30,6 +30,13 @@ configure :development do
   activate :livereload
 end
 
+
+activate :external_pipeline,
+  name: :broccoli,
+  command: "cd asset-project/ && broccoli #{build? ? :build : :serve} dist",
+  source: "asset-project/dist",
+  latency: 2
+
 ###
 # Helpers
 ###
@@ -45,11 +52,6 @@ end
 configure :build do
 
   Slim::Engine.set_options pretty: false, sort_attrs: true
-
-  compass_config do |config|
-    config.output_style = :compressed
-    config.sass_options = { :line_comments => false }
-  end
 
   # Minify CSS on build
   activate :minify_css

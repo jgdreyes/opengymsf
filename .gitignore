@@ -19,3 +19,7 @@
 
 
 /.gems
+
+
+/asset-project/node_modules
+/asset-project/tmp
