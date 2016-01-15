@@ -17,6 +17,8 @@ page '/*.txt', layout: false
 #  which_fake_page: "Rendering a fake page with a local variable" }
 
 
+#set :css_dir, '//localhost:4200/assets/stylesheets'
+
 set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 set :images_dir, 'images'
@@ -25,32 +27,25 @@ set :images_dir, 'images'
 
 Slim::Engine.set_options pretty: true, sort_attrs: false
 
-# Reload the browser automatically whenever files change
-configure :development do
-  activate :livereload
-end
 
 
 activate :external_pipeline,
   name: :broccoli,
-  command: "cd asset-project/ && broccoli #{build? ? :build : :serve} dist",
+  command: "cd asset-project/ && broccoli #{build? ? "build dist" : :serve}",
   source: "asset-project/dist",
   latency: 2
 
-###
-# Helpers
-###
 
-# Methods defined in the helpers block are available in templates
-# helpers do
-#   def some_helper
-#     "Helping"
-#   end
-# end
+# Reload the browser automatically whenever files change
+configure :development do
+  activate :livereload#, ignore: ["asset-project"]
+
+  puts "HERE in development"
+  activate :asset_host, host: "//localhost:4200/assets"
+end
 
 # Build-specific configuration
 configure :build do
-
   Slim::Engine.set_options pretty: false, sort_attrs: true
 
   # Minify CSS on build
@@ -58,6 +53,9 @@ configure :build do
 
   # Minify Javascript on build
   activate :minify_javascript
+
+
+  activate :asset_host, host: "assets"
 
 
   activate :relative_assets
